@@ -2921,3 +2921,21 @@ void simplecpp::cleanup(std::map<std::string, TokenList*> &filedata)
         delete it->second;
     filedata.clear();
 }
+
+std::string simplecpp::preprocess_inmemory(std::istream& input)
+{
+    simplecpp::OutputList outputList;
+    std::vector<std::string> files;
+    simplecpp::TokenList rawtokens(input,files,"inmemory",&outputList);
+    rawtokens.removeComments();
+    std::map<std::string, simplecpp::TokenList*> included = simplecpp::load(rawtokens, files, DUI(), &outputList);
+
+    for (std::map<std::string, TokenList*>::iterator it = included.begin(); it != included.end(); ++it)
+    {
+        (*it).second->removeComments();
+    }
+    simplecpp::TokenList outputTokens(files);
+    simplecpp::preprocess(outputTokens, rawtokens, files, included, DUI(), &outputList);
+
+    return  outputTokens.stringify();
+}

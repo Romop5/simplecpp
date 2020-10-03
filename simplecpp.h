@@ -323,6 +323,11 @@ namespace simplecpp {
 
     /** Convert Cygwin path to Windows path */
     SIMPLECPP_LIB std::string convertCygwinToWindowsPath(const std::string &cygwinPath);
+
+    /**
+     * Preprocess in-memory program
+     */
+    SIMPLECPP_LIB std::string preprocess_inmemory(std::istream& input);
 }
 
 #endif
